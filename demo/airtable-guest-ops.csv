@@ -1,0 +1,8 @@
+booking_id,guest,property,kind,summary,severity,logged_at,status
+bk_1042,Marcus Lim,Azure Residences 1806,maintenance,Master bedroom aircon running but blowing warm air, not cooling,same_day,2026-08-02T10:35+08:00,dispatched
+bk_1042,Marcus Lim,Azure Residences 1806,escalation,Guest reports duplicate charge on booking and is threatening a bank dispute if not resolved today,urgent,2026-08-02T10:41+08:00,open
+bk_1042,Marcus Lim,Azure Residences 1806,escalation,Strong gas smell near the kitchen stove, potential safety hazard,urgent,2026-08-02T10:46+08:00,open
+bk_1039,Aiko Tanaka,Azure Residences 1806,maintenance,Hot water intermittent in the shower,routine,2026-07-29T18:10+08:00,resolved
+bk_1051,Daniel Okafor,Seaside Loft 402,escalation,Guest locked out, smart lock not accepting the code,urgent,2026-08-01T21:05+08:00,resolved
+bk_1051,Daniel Okafor,Seaside Loft 402,maintenance,Wifi router needs a reset, guest reports no connection,same_day,2026-08-02T09:20+08:00,dispatched
+bk_1063,Priya Nair,Garden Suites 12B,maintenance,Kitchen sink draining slowly,routine,2026-08-02T14:00+08:00,dispatched

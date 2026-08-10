@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alagà · receipts</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#141613; --raised:#1c1f1a; --line:#2b2e27;
+    --bone:#ece7dc; --dim:#8f9285; --care:#cf9a4e; --ok:#93a35f;
+    --slack:#c98bbf; --gmail:#df7b6d; --air:#e0b45a; --cal:#6f95c9;
+    --serif:"Newsreader",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{margin:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:#0c0d0b;color:var(--bone);font-family:var(--sans);display:grid;place-items:center;overflow:hidden}
+  .stage{width:1280px;height:720px;position:relative;overflow:hidden;padding:52px 64px;
+    background:radial-gradient(120% 100% at 82% -12%, #1b1e18 0%, var(--ground) 55%, #101210 100%)}
+  header{opacity:0;transform:translateY(10px);transition:.7s}
+  header.on{opacity:1;transform:none}
+  .kick{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--care)}
+  h1{font-family:var(--serif);font-weight:500;font-size:46px;line-height:1.05;margin:12px 0 8px;letter-spacing:-.01em}
+  .sub{font-family:var(--serif);font-size:19px;color:var(--dim);max-width:60ch}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
+  .card{background:var(--raised);border:1px solid var(--line);border-radius:16px;padding:22px 24px;position:relative;
+    opacity:0;transform:translateY(18px) scale(.98);transition:.55s;border-top-width:3px}
+  .card.on{opacity:1;transform:none}
+  .card[data-a="slack"]{border-top-color:var(--slack)}
+  .card[data-a="gmail"]{border-top-color:var(--gmail)}
+  .card[data-a="air"]{border-top-color:var(--air)}
+  .card[data-a="cal"]{border-top-color:var(--cal)}
+  .card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .card .app{font-family:var(--sans);font-weight:600;font-size:16px;display:flex;align-items:center;gap:9px}
+  .card .app .ic{width:10px;height:10px;border-radius:3px}
+  .card[data-a="slack"] .ic{background:var(--slack)}.card[data-a="gmail"] .ic{background:var(--gmail)}
+  .card[data-a="air"] .ic{background:var(--air)}.card[data-a="cal"] .ic{background:var(--cal)}
+  .card .where{font-family:var(--mono);font-size:12px;color:var(--dim);font-weight:400}
+  .badge{font-family:var(--mono);font-size:11px;color:var(--ok);border:1px solid #3c4a24;background:#181d10;border-radius:999px;padding:3px 10px;opacity:0;transition:.4s}
+  .card.on .badge{opacity:1}
+  .subj{font-family:var(--sans);font-weight:600;font-size:15px;color:var(--bone);margin-bottom:5px}
+  .body{font-family:var(--sans);font-size:14px;line-height:1.5;color:#c8c3b7}
+  .body .u{color:var(--care)}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:11px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pill{border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+  .pill.urgent{color:var(--gmail);border-color:#4a2622;background:#20120f}
+  .pill.open{color:var(--care);border-color:#4a3a1f;background:#221b0f}
+  .msg{font-family:var(--mono);font-size:13px;color:#d6d1c5;line-height:1.55}
+  .msg .rl{color:var(--gmail)}
+  footer{position:absolute;left:64px;right:64px;bottom:34px;display:flex;align-items:center;gap:14px;
+    border-top:1px solid var(--line);padding-top:16px;opacity:0;transition:.7s;font-family:var(--mono);font-size:13px;color:var(--dim)}
+  footer.on{opacity:1}
+  footer .ok{color:var(--ok)}
+  footer .nm{margin-left:auto;font-family:var(--serif);font-size:15px;color:var(--bone)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <header id="hd">
+    <div class="kick">receipts · live accounts</div>
+    <h1>One guest message. Four real systems.</h1>
+    <div class="sub">The gas-smell escalation, fanned out by n8n. These are the actual receipts, not a mockup.</div>
+  </header>
+
+  <div class="grid">
+    <div class="card" data-a="slack">
+      <div class="top"><span class="app"><span class="ic"></span>Slack <span class="where">#guest-ops-alerts</span></span><span class="badge">✓ posted</span></div>
+      <div class="msg"><span class="rl">🚨 escalation</span> for bk_1042<br>Guest reports a strong gas smell near the kitchen stove, safety issue <span style="color:var(--gmail)">[urgent]</span></div>
+    </div>
+
+    <div class="card" data-a="gmail">
+      <div class="top"><span class="app"><span class="ic"></span>Gmail <span class="where">angelika.f.agutaya@…</span></span><span class="badge">✓ delivered</span></div>
+      <div class="subj">Guest escalation · bk_1042</div>
+      <div class="body">Guest reports a strong gas smell near the kitchen stove, safety issue, operator to respond immediately.</div>
+      <div class="meta"><span class="pill urgent">urgent</span><span>6 emails from the agent</span></div>
+    </div>
+
+    <div class="card" data-a="air">
+      <div class="top"><span class="app"><span class="ic"></span>Airtable <span class="where">Guest Operations Issues</span></span><span class="badge">✓ logged</span></div>
+      <div class="body">bk_1042 · Marcus Lim (Azure Residences 1806, in-stay, PHP 18,400) says his card was charged twice for this booking.</div>
+      <div class="meta"><span class="pill urgent">urgent</span><span class="pill open">open</span><span>logged 2026-08-02</span></div>
+    </div>
+
+    <div class="card" data-a="cal">
+      <div class="top"><span class="app"><span class="ic"></span>Calendar <span class="where">Schedule fix</span></span><span class="badge">✓ created</span></div>
+      <div class="subj">maintenance: master bedroom aircon</div>
+      <div class="body">Event created to schedule the tech visit while the guest is still in-stay.</div>
+      <div class="meta"><span>1-hour block · today</span></div>
+    </div>
+  </div>
+
+  <footer id="ft">
+    <span>n8n workflow <span style="color:var(--bone)">Guest Ops</span> · execution <span class="ok">success</span> · every node ran OK</span>
+    <span class="nm">Alagà · verified live</span>
+  </footer>
+</div>
+
+<script>
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function run(){
+  document.getElementById('hd').classList.add('on'); await sleep(1500);
+  for(const a of ['slack','gmail','air','cal']){ document.querySelector(`.card[data-a="${a}"]`).classList.add('on'); await sleep(900); }
+  await sleep(500); document.getElementById('ft').classList.add('on');
+  await sleep(3800); document.body.dataset.done='1';
+}
+window.addEventListener('load',()=>setTimeout(run,400));
+</script>
+</body>
+</html>

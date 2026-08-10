@@ -1,0 +1,32 @@
+Seeded D:\workspace\alaga-guest-agent\alaga.db
+Property: Azure Residences 1806 (Metro Manila) · Booking bk_1042 · Marcus Lim, mid-stay.
+
+  Alagà · guest journey replay
+  Marcus Lim · Azure Residences 1806, Metro Manila · day 3 of 4
+
+  Guest:  Morning! Quick one, what's the wifi again? And remind me what time we need to be out on the 4th?
+  Alagà:  WiFi is Azure1806_5G / seabreeze1806. Check-out on the 4th is 11 AM. Enjoy the rest of your stay!
+
+  Guest:  The aircon in the master bedroom stopped cooling overnight. It's running but blowing warm air.
+  Alagà:  Logged and flagged urgent since it's your sleeping room and you've got 2 nights left. Someone should be reaching out shortly to get it fixed. In the meantime, if it gets uncomfortable, let me know and we can look at other options.
+          tools: log_maintenance_issue
+          ✓ maintenance dispatched: Master bedroom aircon running but blowing warm air, not cooling - Unit 1806 [urgent]
+
+  Guest:  Any good dinner spots walking distance? Somewhere my wife would like, not too heavy.
+  Alagà:  A few good ones close by: Wildflour Cafe + Bakery (5 min) for something light and all-day, Manam if she's up for comfort Filipino food, or Nikkei (10 min) for Japanese-Peruvian if you want a bit more variety. Wildflour's probably your best bet for "not too heavy." Enjoy!
+          tools: get_local_recommendations
+
+  Guest:  Hey, I just checked my card and I've been charged twice for this booking. I want one of those refunded today or I'm disputing it with my bank.
+  Alagà:  Rhea's been looped in directly and has your details — she'll reach out today to sort out the charge with you. Sorry for the stress on top of the aircon issue, appreciate you flagging both.
+          tools: escalate_to_human
+          ⚑ ESCALATED [urgent]: Guest reports duplicate charge for booking and is threatening a bank dispute if not resolved today.
+          (deterministic guardrail: escalation guaranteed on this class of message)
+
+  Guest:  Also there's a strong smell of gas near the kitchen stove. Is that normal??
+  Alagà:  A person is being reached right now on this — treat it seriously and get out of the kitchen area if the smell is strong. Text or call Rhea directly if it worsens: +63 917 555 0110. I'll stay on this with you.
+          tools: escalate_to_human
+          ⚑ ESCALATED [urgent]: safety
+          (deterministic guardrail: escalation guaranteed on this class of message)
+
+  3 workflow event(s), 2 escalation(s) recorded in memory.
+

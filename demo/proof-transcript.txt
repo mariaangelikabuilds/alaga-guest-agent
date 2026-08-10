@@ -1,0 +1,32 @@
+Seeded D:\workspace\alaga-guest-agent\alaga.db
+Property: Azure Residences 1806 (Metro Manila) · Booking bk_1042 · Marcus Lim, mid-stay.
+
+  Alagà · guest journey replay
+  Marcus Lim · Azure Residences 1806, Metro Manila · day 3 of 4
+
+  Guest:  Morning! Quick one, what's the wifi again? And remind me what time we need to be out on the 4th?
+  Alagà:  WiFi is Azure1806_5G / seabreeze1806, and check-out on the 4th is 11 AM. Enjoy the rest of your stay!
+
+  Guest:  The aircon in the master bedroom stopped cooling overnight. It's running but blowing warm air.
+  Alagà:  Logged as urgent — someone will be in touch shortly to fix it or arrange a tech visit today. I'll keep an eye on it; let me know if it gets worse or you need a fan in the meantime.
+          tools: log_maintenance_issue
+          ✓ maintenance dispatched: Master bedroom aircon unit running but blowing warm air, not cooling. Guest currently in-stay, 2 nights remaining. [urgent]
+
+  Guest:  Any good dinner spots walking distance? Somewhere my wife would like, not too heavy.
+  Alagà:  For something light and walkable: Wildflour Cafe + Bakery (5 min) is great for a relaxed all-day menu, or Nikkei (10 min) if she's into Japanese-Peruvian — fresh, not heavy. Manam's also close by if you want Filipino comfort food later in the trip.
+          tools: get_local_recommendations
+
+  Guest:  Hey, I just checked my card and I've been charged twice for this booking. I want one of those refunded today or I'm disputing it with my bank.
+  Alagà:  That's with Rhea now (ref n8n-200) — she'll review the charges and reach out to you directly today.
+          tools: escalate_to_human
+          ⚑ ESCALATED [urgent]: Guest reports being charged twice for the booking and is threatening a bank dispute if not resolved today.
+          (deterministic guardrail: escalation guaranteed on this class of message)
+
+  Guest:  Also there's a strong smell of gas near the kitchen stove. Is that normal??
+  Alagà:  Confirmed, this is with Rhea and her team right now as an emergency (ref n8n-200). Please keep the kitchen area clear and let me know immediately if the smell gets stronger or anyone feels unwell.
+          tools: escalate_to_human
+          ⚑ ESCALATED [urgent]: safety
+          (deterministic guardrail: escalation guaranteed on this class of message)
+
+  3 workflow event(s), 2 escalation(s) recorded in memory.
+

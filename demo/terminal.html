@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alagà · npm run demo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0f0c; --chrome:#191c17; --line:#262a22;
+    --text:#d7d3c6; --dim:#7f8377; --care:#d29a4f; --guest:#e0a98c;
+    --ok:#9fb066; --alert:#d9705f;
+    --mono:"IBM Plex Mono",ui-monospace,menlo,monospace;
+  }
+  *{margin:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:#050605;display:grid;place-items:center;font-family:var(--mono)}
+  .term{width:1180px;height:680px;background:var(--bg);border-radius:12px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid var(--line);display:flex;flex-direction:column}
+  .bar{height:40px;background:var(--chrome);display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line);flex:none}
+  .bar .d{width:12px;height:12px;border-radius:50%}
+  .d.r{background:#e0665b}.d.y{background:#e3b34e}.d.g{background:#83b45a}
+  .bar .t{margin-left:14px;color:var(--dim);font-size:13px}
+  .body{flex:1;padding:22px 26px;overflow:hidden;position:relative}
+  .stream{font-size:16px;line-height:1.62;white-space:pre-wrap;transition:transform .25s ease}
+  .row{opacity:0;transition:opacity .18s}
+  .row.on{opacity:1}
+  .dim{color:var(--dim)} .care{color:var(--care)} .ok{color:var(--ok)} .alert{color:var(--alert)}
+  .lbl-g{color:var(--guest);font-weight:600} .lbl-a{color:var(--care);font-weight:600}
+  .txt{color:var(--text)}
+  .cursor{display:inline-block;width:9px;height:18px;background:var(--care);vertical-align:-3px;animation:bl 1s steps(1) infinite}
+  @keyframes bl{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="term">
+  <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+    <span class="t">alaga-guest-agent — npm run demo</span></div>
+  <div class="body"><div class="stream" id="stream"></div></div>
+</div>
+<script>
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const stream=document.getElementById('stream');
+// [class, text, pauseAfterMs]
+const L=[
+  ['prompt','',0],
+  ['dim','Seeded D:\\workspace\\alaga-guest-agent\\alaga.db',60],
+  ['dim','Property: Azure Residences 1806 (Metro Manila) · Booking bk_1042 · Marcus Lim, mid-stay.',260],
+  ['sp','',0],
+  ['care','  Alagà · guest journey replay',60],
+  ['dim','  Marcus Lim · Azure Residences 1806, Metro Manila · day 3 of 4',420],
+  ['sp','',0],
+  ['g','  Guest:  Morning! Quick one, what\u2019s the wifi again? And what time do we need to be out on the 4th?',450],
+  ['a','  Alagà:  WiFi is Azure1806_5G / seabreeze1806, and check-out on the 4th is 11 AM. Enjoy the rest of your stay!',1500],
+  ['sp','',0],
+  ['g','  Guest:  The aircon in the master bedroom stopped cooling overnight. It\u2019s running but blowing warm air.',450],
+  ['a','  Alagà:  Logged as urgent — someone will be in touch shortly to fix it or arrange a tech visit today. I\u2019ll keep an eye on it; tell me if it gets worse.',300],
+  ['dim','          tools: log_maintenance_issue',120],
+  ['ok','          ✓ maintenance dispatched: master bedroom aircon, blowing warm air  [urgent]',1500],
+  ['sp','',0],
+  ['g','  Guest:  Any good dinner spots walking distance? Somewhere my wife would like, not too heavy.',450],
+  ['a','  Alagà:  Wildflour Cafe + Bakery (5 min) for a relaxed all-day menu, or Nikkei (10 min) for Japanese-Peruvian — fresh, not heavy. Manam\u2019s close too for Filipino comfort food.',300],
+  ['dim','          tools: get_local_recommendations',1300],
+  ['sp','',0],
+  ['g','  Guest:  I\u2019ve been charged twice for this booking. Refund me today or I\u2019m disputing it with my bank.',450],
+  ['a','  Alagà:  That\u2019s with Rhea now (ref n8n-200) — she\u2019ll review the charges and reach out to you directly today.',300],
+  ['dim','          tools: escalate_to_human',120],
+  ['alert','          ⚑ ESCALATED [urgent]: duplicate charge, guest threatening a bank dispute',120],
+  ['dim','          (deterministic guardrail: escalation guaranteed on this class of message)',1500],
+  ['sp','',0],
+  ['g','  Guest:  Also there\u2019s a strong smell of gas near the kitchen stove. Is that normal??',450],
+  ['a','  Alagà:  Confirmed, this is with Rhea and her team right now as an emergency. Please keep the kitchen area clear and tell me immediately if it gets stronger.',300],
+  ['dim','          tools: escalate_to_human',120],
+  ['alert','          ⚑ ESCALATED [urgent]: safety',120],
+  ['dim','          (deterministic guardrail: escalation guaranteed on this class of message)',1400],
+  ['sp','',0],
+  ['dim','  3 workflow event(s), 2 escalation(s) recorded in memory.',800],
+];
+function add(cls,html){const d=document.createElement('div');d.className='row '+({sp:'',dim:'dim',care:'care',ok:'ok',alert:'alert'}[cls]||'');d.innerHTML=html||'&nbsp;';stream.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));
+  const b=document.querySelector('.body');const over=stream.scrollHeight-b.clientHeight+28;stream.style.transform=over>0?`translateY(${-over}px)`:'none';return d;}
+function line(cls,text){
+  if(cls==='g'){return `<span class="lbl-g">  Guest:</span><span class="txt">${text.replace('  Guest:','')}</span>`;}
+  if(cls==='a'){return `<span class="lbl-a">  Alagà:</span><span class="txt">${text.replace('  Alagà:','')}</span>`;}
+  return text;
+}
+async function run(){
+  // typed prompt
+  const p=add('','<span class="dim">PS D:\\workspace\\alaga-guest-agent&gt; </span>');
+  const cmd='npm run demo';let acc='';
+  const span=document.createElement('span');span.className='txt';p.appendChild(span);
+  const cur=document.createElement('span');cur.className='cursor';p.appendChild(cur);
+  for(const ch of cmd){acc+=ch;span.textContent=acc;await sleep(70);}
+  await sleep(500);cur.remove();
+  for(const [cls,text,pause] of L.slice(1)){
+    add(cls,line(cls,text));
+    await sleep(Math.max(120,(text.length?text.length*4:0)));
+    if(pause)await sleep(pause);
+  }
+  await sleep(600);document.body.dataset.done='1';
+}
+window.addEventListener('load',()=>setTimeout(run,400));
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alagà · walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#141613; --raised:#1d201b; --line:#2c2f28;
+    --bone:#ece7dc; --dim:#8f9285;
+    --care:#cf9a4e;        /* warm host amber, the brand */
+    --alert:#cf6a5e;       /* escalation */
+    --ok:#93a35f;          /* handled */
+    --serif:"Newsreader",Georgia,serif;
+    --sans:"IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,menlo,monospace;
+  }
+  *{margin:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:#0c0d0b;color:var(--bone);font-family:var(--sans);display:grid;place-items:center;overflow:hidden}
+  .stage{position:relative;width:1280px;height:720px;background:
+    radial-gradient(120% 100% at 80% -10%, #1b1e18 0%, var(--ground) 55%, #101210 100%);
+    overflow:hidden}
+  .scene{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none;padding:64px 72px}
+  .scene.on{opacity:1}
+
+  /* title */
+  #title{display:flex;flex-direction:column;justify-content:center}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--care);opacity:0;transform:translateY(8px);transition:.7s}
+  #title h1{font-family:var(--serif);font-weight:500;font-size:112px;line-height:.98;letter-spacing:-.01em;margin:18px 0 0;opacity:0;transform:translateY(14px);transition:.9s .15s}
+  #title h1 em{font-style:italic;color:var(--care)}
+  .lede{font-family:var(--serif);font-size:30px;line-height:1.4;color:var(--bone);max-width:20ch;margin-top:26px;opacity:0;transform:translateY(14px);transition:.9s .3s}
+  .lede b{color:var(--care);font-weight:500}
+  .sub{font-family:var(--mono);font-size:14px;color:var(--dim);margin-top:28px;opacity:0;transition:.9s .5s}
+  .lit .kicker,.lit h1,.lit .lede,.lit .sub{opacity:1;transform:none}
+
+  /* thread */
+  #thread{display:grid;grid-template-rows:auto 1fr;gap:20px}
+  .head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px}
+  .head .who{font-family:var(--serif);font-size:26px}
+  .head .meta{font-family:var(--mono);font-size:13px;color:var(--dim)}
+  .head .stage-pill{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--care);border:1px solid #4a3a1f;background:#221b0f;padding:4px 10px;border-radius:999px}
+  .thread-body{overflow:hidden;position:relative}
+  .rail{display:flex;flex-direction:column;gap:16px;transition:transform .5s ease}
+  .msg{max-width:70%;opacity:0;transform:translateY(10px);transition:.45s}
+  .msg.show{opacity:1;transform:none}
+  .msg .b{padding:13px 17px;border-radius:14px;font-size:18px;line-height:1.5}
+  .msg.guest{align-self:flex-end;text-align:right}
+  .msg.guest .b{background:#26140f;color:#f0d9c9;border:1px solid #47281d;border-bottom-right-radius:4px;text-align:left}
+  .msg.agent .b{background:var(--raised);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .msg .name{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+  .msg.agent .name{color:var(--care)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .chip{font-family:var(--mono);font-size:12px;padding:3px 9px;border-radius:6px;border:1px solid var(--line);color:var(--dim)}
+  .chip.tool{color:var(--bone);border-color:#3a3d34}
+  .chip.ok{color:var(--ok);border-color:#3c4a24;background:#191d10}
+  .chip.flag{color:var(--alert);border-color:#4a2622;background:#20120f}
+  .typing{display:inline-flex;gap:5px;align-items:center;padding:14px 17px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes bl{0%,60%,100%{opacity:.25}30%{opacity:1}}
+
+  /* fan-out */
+  #fanout{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  #fanout .trigger{max-width:26ch;font-family:var(--serif);font-size:30px;line-height:1.35;opacity:0;transition:.6s}
+  #fanout .trigger b{color:var(--alert)}
+  #fanout .sub2{font-family:var(--mono);font-size:13px;color:var(--dim);margin-top:14px;opacity:0;transition:.6s .1s}
+  .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px;width:920px}
+  .app{background:var(--raised);border:1px solid var(--line);border-radius:14px;padding:20px 18px;text-align:left;opacity:0;transform:translateY(16px) scale(.97);transition:.5s}
+  .app.lit{opacity:1;transform:none;border-color:#3c4a24}
+  .app .n{font-family:var(--sans);font-weight:600;font-size:17px;display:flex;align-items:center;justify-content:space-between}
+  .app .n .dot{width:9px;height:9px;border-radius:50%;background:#3a3d34;transition:.4s}
+  .app.lit .n .dot{background:var(--ok);box-shadow:0 0 0 4px #93a35f22}
+  .app .d{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:8px;line-height:1.5}
+  .app .r{font-family:var(--mono);font-size:12px;color:var(--ok);margin-top:10px;opacity:0;transition:.4s}
+  .app.lit .r{opacity:1}
+  #fanout.go .trigger,#fanout.go .sub2{opacity:1}
+
+  /* close */
+  #close{display:flex;flex-direction:column;justify-content:center}
+  #close .pillars{display:flex;gap:40px;margin-bottom:40px}
+  #close .p{flex:1}
+  #close .p h3{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--care);margin-bottom:10px}
+  #close .p p{font-family:var(--serif);font-size:21px;line-height:1.4;color:var(--bone)}
+  #close .line{font-family:var(--serif);font-size:40px;line-height:1.2;max-width:24ch;margin-bottom:auto}
+  #close .foot{display:flex;align-items:baseline;gap:16px;border-top:1px solid var(--line);padding-top:20px}
+  #close .foot .nm{font-family:var(--serif);font-size:22px}
+  #close .foot .st{font-family:var(--mono);font-size:13px;color:var(--dim);margin-left:auto}
+  #close .fade{opacity:0;transform:translateY(12px);transition:.8s}
+  #close.go .fade{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <section class="scene" id="title">
+    <div class="kicker">a guest agent · built on the Claude SDK</div>
+    <h1><em>Alagà</em></h1>
+    <div class="lede">The guest agent that knows when to handle it, and when to <b>put a person on it</b>.</div>
+    <div class="sub">Filipino: to look after. One stay, watched end to end.</div>
+  </section>
+
+  <section class="scene" id="thread">
+    <div class="head">
+      <span class="who">Marcus Lim</span>
+      <span class="meta">Azure Residences 1806 · Metro Manila · whatsapp</span>
+      <span class="stage-pill">day 3 of 4 · in&#8209;stay</span>
+    </div>
+    <div class="thread-body"><div class="rail" id="rail"></div></div>
+  </section>
+
+  <section class="scene" id="fanout">
+    <div class="trigger">"There's a strong smell of gas near the stove." One message, and the agent <b>escalates</b>.</div>
+    <div class="sub2">A person is reached. Then one workflow fans out to every app the operator runs.</div>
+    <div class="apps">
+      <div class="app" data-app="slack"><div class="n">Slack<span class="dot"></span></div><div class="d">#guest-ops-alerts</div><div class="r">✓ posted</div></div>
+      <div class="app" data-app="gmail"><div class="n">Gmail<span class="dot"></span></div><div class="d">operator emailed</div><div class="r">✓ sent</div></div>
+      <div class="app" data-app="cal"><div class="n">Calendar<span class="dot"></span></div><div class="d">fix scheduled</div><div class="r">✓ created</div></div>
+      <div class="app" data-app="air"><div class="n">Airtable<span class="dot"></span></div><div class="d">ops record</div><div class="r">✓ logged</div></div>
+    </div>
+  </section>
+
+  <section class="scene" id="close">
+    <div class="line fade">Not a chatbot. A guest agent with a floor it cannot cross.</div>
+    <div class="pillars">
+      <div class="p fade"><h3>Memory</h3><p>The whole stay, not the last message. Booking, history, open tickets.</p></div>
+      <div class="p fade"><h3>Action</h3><p>Real tools that dispatch work, not "I'll let the host know."</p></div>
+      <div class="p fade"><h3>Guardrail</h3><p>Safety and money escalate before the model runs, guaranteed.</p></div>
+    </div>
+    <div class="foot fade">
+      <span class="nm">Maria Angelika Agutaya</span>
+      <span class="st">Claude SDK · n8n / Trigger.dev · verified live</span>
+    </div>
+  </section>
+</div>
+
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const $ = s => document.querySelector(s);
+function show(id){ document.querySelectorAll('.scene').forEach(s=>s.classList.remove('on')); $('#'+id).classList.add('on'); }
+// clean fade-through: fade the current scene out fully, then fade the next in
+async function to(id){ document.querySelectorAll('.scene.on').forEach(s=>s.classList.remove('on')); await sleep(680); $('#'+id).classList.add('on'); await raf(); }
+
+const TURNS = [
+  { g:"Morning! What's the wifi again? And what time do we check out on the 4th?",
+    a:"WiFi is Azure1806_5G / seabreeze1806. Check-out on the 4th is 11 AM. Enjoy the rest of your stay!",
+    chips:[["it remembered","ok"]] },
+  { g:"The aircon in the master bedroom stopped cooling overnight.",
+    a:"Logged and flagged urgent since it's your sleeping room and you've 2 nights left. Someone will reach out shortly. If it gets uncomfortable, tell me and we'll sort another option.",
+    chips:[["log_maintenance_issue","tool"],["dispatched to operator","ok"]] },
+  { g:"I've been charged twice for this booking. Refund me today or I dispute it with my bank.",
+    a:"Rhea's been looped in directly and has your details, she'll reach out today to sort the charge. Sorry for the stress on top of the aircon, appreciate you flagging both.",
+    chips:[["escalate_to_human","tool"],["⚑ never promises a refund","flag"]] },
+  { g:"Also there's a strong smell of gas near the kitchen stove. Is that normal??",
+    a:"A person is being reached right now. Please step away from the kitchen if the smell is strong, and call Rhea directly if it worsens: +63 917 555 0110. I'll stay on this with you.",
+    chips:[["escalate_to_human","tool"],["⚑ safety · guardrail forced","flag"]] },
+];
+
+async function playThread(){
+  const rail = $('#rail');
+  for(const t of TURNS){
+    const g = el(`<div class="msg guest"><div class="name">Guest</div><div class="b">${t.g}</div></div>`);
+    rail.appendChild(g); await raf(); g.classList.add('show'); await sleep(650);
+    const typing = el(`<div class="msg agent show"><div class="typing"><i></i><i></i><i></i></div></div>`);
+    rail.appendChild(typing); trim(rail); await sleep(900); typing.remove();
+    const chips = t.chips.map(([txt,k])=>`<span class="chip ${k}">${txt}</span>`).join('');
+    const a = el(`<div class="msg agent"><div class="name">Alagà</div><div class="b">${t.a}</div><div class="chips">${chips}</div></div>`);
+    rail.appendChild(a); await raf(); a.classList.add('show'); trim(rail);
+    await sleep(2600);
+  }
+}
+function el(h){const d=document.createElement('div');d.innerHTML=h.trim();return d.firstChild;}
+const raf = ()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+function trim(rail){ const b=$('.thread-body'); const over=rail.scrollHeight-b.clientHeight; rail.style.transform = over>0?`translateY(${-over}px)`:'none'; }
+
+async function playFanout(){
+  $('#fanout').classList.add('go'); await sleep(1400);
+  for(const id of ['slack','gmail','cal','air']){ document.querySelector(`.app[data-app="${id}"]`).classList.add('lit'); await sleep(560); }
+}
+
+async function run(){
+  show('title'); await raf(); $('#title').classList.add('lit'); await sleep(3800);
+  await to('thread'); await sleep(400); await playThread(); await sleep(700);
+  await to('fanout'); await playFanout(); await sleep(2600);
+  await to('close'); $('#close').classList.add('go'); await sleep(6200);
+  document.body.dataset.done = "1";
+}
+window.addEventListener('load', ()=>setTimeout(run, 400));
+</script>
+</body>
+</html>
