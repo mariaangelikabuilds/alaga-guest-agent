@@ -7,6 +7,9 @@
 import type { DatabaseSync } from "node:sqlite";
 
 const WEBHOOK = process.env.N8N_OPS_WEBHOOK?.trim();
+// The webhook is gated on this shared secret; without it n8n answers 403 and the
+// trigger is recorded locally as undelivered rather than silently dropped.
+const WEBHOOK_KEY = process.env.N8N_OPS_KEY?.trim();
 
 export interface TriggerResult { delivered: boolean; ref: string; }
 
@@ -24,7 +27,10 @@ export async function fireWorkflow(
     try {
       const res = await fetch(WEBHOOK, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          ...(WEBHOOK_KEY ? { "x-guest-ops-key": WEBHOOK_KEY } : {}),
+        },
         body: JSON.stringify({ kind, bookingId, payload, at: now }),
       });
       delivered = res.ok;

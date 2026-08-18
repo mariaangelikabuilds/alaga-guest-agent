@@ -20,10 +20,13 @@ interface Rule {
 }
 
 // Ordered: urgent safety first. A hit forces escalation and hands the agent a safe
+// NOTE: match the words guests actually type, not the dictionary form. blood
+// did not match "he's bleeding", so a bleeding child did not force escalation.
+// Found by src/guardrails.test.ts on its first run, which is what it is for.
 // holding line, so the guest is never left waiting on a human-only issue.
 const RULES: Rule[] = [
   {
-    test: /\b(gas|smoke|fire|burning|carbon monoxide|electric shock|sparking|flood|break ?in|intruder|blood|injured|can'?t breathe|unconscious|assault)\b/i,
+    test: /\b(gas|smoke|fire|burning|carbon monoxide|electric shock|sparking|flood|break ?in|intruder|blood|bleeding|bleed|injur(?:y|ed|ies)|can'?t breathe|unconscious|assault)\b/i,
     severity: "urgent",
     reason: "possible safety incident",
     guidance: "Treat as a safety issue: give the one immediate safety step, tell the guest a person is being reached right now, and share the operator's direct number.",
