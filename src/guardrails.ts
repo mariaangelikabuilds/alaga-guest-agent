@@ -20,7 +20,7 @@ interface Rule {
 }
 
 // Ordered: urgent safety first. A hit forces escalation and hands the agent a safe
-// NOTE: match the words guests actually type, not the dictionary form. blood
+// NOTE: match the words guests actually type, not the dictionary form. blood
 // did not match "he's bleeding", so a bleeding child did not force escalation.
 // Found by src/guardrails.test.ts on its first run, which is what it is for.
 // holding line, so the guest is never left waiting on a human-only issue.
