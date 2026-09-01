@@ -3,7 +3,9 @@
 The agent triggers one n8n workflow, **Guest Ops**, on your own n8n instance
 (`https://<your-instance>.app.n8n.cloud/workflow/<id>`). Every guest-agent
 decision (maintenance, escalation) hits its webhook and logs to the `guest-ops-log`
-table. Four app nodes are already wired off that log, disabled, waiting on one thing each:
+table. Four app nodes fan out from that log: Slack, Gmail, Airtable, and Google Calendar.
+On the reference instance all four are connected and enabled, and one escalation writes to
+all four in a single run. On a fresh fork they ship disabled, each waiting on one thing:
 a credential only you can connect (it is an OAuth sign-in, so it cannot be done from a
 headless session).
 
